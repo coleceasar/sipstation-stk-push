@@ -96,13 +96,35 @@ function App() {
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Bablaz SIP APP</h1>
-          <div className="w-full h-48 bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
-            <div className="text-center">
-              <svg className="w-16 h-16 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <p className="text-gray-500 text-sm">Product Image</p>
-            </div>
+          <div className="w-full h-48 bg-gray-100 rounded-lg mb-4 overflow-hidden">
+            <img 
+              src="/beer.webp" 
+              alt="Premium Beer" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to second image if first fails
+                const target = e.target as HTMLImageElement;
+                if (target.src.includes('beer.webp')) {
+                  target.src = '/beer2.webp';
+                } else {
+                  // If both images fail, show placeholder
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent) {
+                    parent.innerHTML = `
+                      <div class="flex items-center justify-center h-full">
+                        <div class="text-center">
+                          <svg class="w-16 h-16 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <p class="text-gray-500 text-sm">Product Image</p>
+                        </div>
+                      </div>
+                    `;
+                  }
+                }
+              }}
+            />
           </div>
           <p className="text-lg font-semibold text-gray-700">Price: KES {amount}</p>
         </div>
