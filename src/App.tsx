@@ -9,7 +9,7 @@ interface PaymentResponse {
 
 function App() {
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [amount] = useState(100);
+  const [amount, setAmount] = useState(100);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error' | 'info'>('info');
@@ -30,6 +30,12 @@ function App() {
   const handlePayment = async () => {
     if (!phoneNumber || !amount) {
       setMessage('Please enter both phone number and amount.');
+      setMessageType('error');
+      return;
+    }
+
+    if (amount <= 0) {
+      setMessage('Please enter a valid amount greater than 0.');
       setMessageType('error');
       return;
     }
@@ -159,8 +165,11 @@ function App() {
               type="number"
               id="amount"
               value={amount}
-              readOnly
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+              onChange={(e) => setAmount(Number(e.target.value))}
+              placeholder="Enter amount"
+              min="1"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+              disabled={isLoading}
             />
           </div>
 
